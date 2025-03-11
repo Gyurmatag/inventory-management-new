@@ -6,7 +6,22 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "test:headed": "playwright test --headed",
+    "test:chrome": "playwright test --project=chromium",
+    "test:firefox": "playwright test --project=firefox",
+    "test:webkit": "playwright test --project=webkit",
+    "test:chrome:headed": "playwright test --project=chromium --headed",
+    "test:firefox:headed": "playwright test --project=firefox --headed",
+    "test:webkit:headed": "playwright test --project=webkit --headed",
+    "test:debug": "playwright test --debug",
+    "test:slow": "playwright test --debug --slow-mo=1000",
+    "test:debug:console": "playwright test --debug --console",
+    "test:debug:verbose": "playwright test --debug --verbose",
+    "test:report": "playwright show-report",
+    "test:update-snapshots": "playwright test --update-snapshots"
   },
   "dependencies": {
     "@hookform/resolvers": "^4.1.3",
@@ -29,6 +44,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@playwright/test": "^1.51.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
