@@ -1,5 +1,4 @@
 import { test, expect } from '@playwright/test';
-import { initialProducts } from '../lib/data';
 
 test.describe('Home Page', () => {
   test.beforeEach(async ({ page }) => {
@@ -17,17 +16,22 @@ test.describe('Home Page', () => {
     // Click the View Products button
     await page.getByTestId('products-link').click();
     
-    // Check if we're on the products page
+    // Check if we're on the products pages
     await expect(page.getByTestId('products-page-title')).toBeVisible();
     await expect(page.getByTestId('products-page-title')).toHaveText('Products');
   });
-  
-  test('should navigate to inventory page when clicking Manage Inventory button', async ({ page }) => {
-    // Click the Manage Inventory button
-    await page.getByTestId('inventory-link').click();
-    
-    // Check if we're on the inventory page
-    await expect(page.getByTestId('inventory-page-title')).toBeVisible();
-    await expect(page.getByTestId('inventory-page-title')).toHaveText('Inventory Management');
-  });
+
+  // Írjunk egy tesztet, amely megvizsgálja, hogyha elnavigálnuk az Inventory oldalra a Manage Inventory gomb segítségével,
+  // akkor tényleg azon az oldalon vagyunk-e
+
+  // Írjunk egy tesztet, amely azt vizsgálja, hogyha az Analytics oldalra navigálunk a View Analytics gomb segítségével,
+  // akkor tényleg sikeres volt-e a navigáció
+
+  // Futassuk le az újonnan készült teszteinket!
+
+  // Hozzunk létre egy új teszt fájlt a tests mappában, amely a navigációs bar tesztelésére szolgál
+  // Ebben a fájlban nézzük meg, hogy működnek-e a navigációk az összes oldalra
+  // Nézzük meg a Profile gombot is. :)
+
+  // Futassunk le az újonnan készült teszteinket!
 });
