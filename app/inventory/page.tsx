@@ -1,3 +1,6 @@
+"use client"
+
+import { useState } from "react"
 import InventoryForm from "@/components/InventoryForm"
 import { 
   Table, 
@@ -8,17 +11,41 @@ import {
   TableHeader, 
   TableRow 
 } from "@/components/ui/table"
-import { initialProducts } from "@/lib/data"
 import { Badge } from "@/components/ui/badge"
+import { initialProducts } from "@/lib/data"
+import { Product } from "@/lib/types"
 
 export default function InventoryPage() {
+  const [products, setProducts] = useState<Product[]>(initialProducts)
+  
   // Sort products by stock level (lowest first)
-  const sortedProducts = [...initialProducts].sort((a, b) => a.stock - b.stock)
+  const sortedProducts = [...products].sort((a, b) => a.stock - b.stock)
+  
+  const handleUpdateInventory = (productId: string, updateType: 'add' | 'remove', quantity: number) => {
+    setProducts(currentProducts => 
+      currentProducts.map(product => {
+        if (product.id === productId) {
+          const newStock = updateType === 'add' 
+            ? product.stock + quantity 
+            : Math.max(0, product.stock - quantity)
+          
+          return {
+            ...product,
+            stock: newStock,
+            lastUpdated: new Date().toISOString().split('T')[0]
+          }
+        }
+        return product
+      })
+    )
+  }
     
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight" data-testid="inventory-page-title">Inventory Management</h1>
+        <h1 className="text-3xl font-bold tracking-tight" data-testid="inventory-page-title">
+          Inventory Management
+        </h1>
         <p className="text-muted-foreground">Update and track your inventory levels</p>
       </div>
       
@@ -60,7 +87,7 @@ export default function InventoryPage() {
         </div>
         
         <div>
-          <InventoryForm />
+          <InventoryForm onUpdateInventory={handleUpdateInventory} />
         </div>
       </div>
     </div>

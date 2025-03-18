@@ -53,7 +53,11 @@ const formSchema = z.object({
   notes: z.string().optional(),
 })
 
-export default function InventoryForm() {
+interface Props {
+  onUpdateInventory: (productId: string, updateType: 'add' | 'remove', quantity: number) => void;
+}
+
+export default function InventoryForm({ onUpdateInventory }: Props) {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
   const [success, setSuccess] = useState<boolean>(false)
   
@@ -72,18 +76,21 @@ export default function InventoryForm() {
   function onSubmit(values: FormValues): void {
     setIsSubmitting(true)
     
-    // Simulate API call
+    // Call the parent's update function
+    onUpdateInventory(
+      values.productId,
+      values.updateType as 'add' | 'remove',
+      values.quantity
+    )
+    
+    // Show success state
     setTimeout(() => {
-      console.log(values)
       setIsSubmitting(false)
       setSuccess(true)
       
-      // Reset success message after 3 seconds
       setTimeout(() => setSuccess(false), 3000)
-      
-      // Reset form
       form.reset()
-    }, 1500)
+    }, 800)
   }
   
   return (
