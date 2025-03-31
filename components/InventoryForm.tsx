@@ -73,24 +73,27 @@ export default function InventoryForm({ onUpdateInventory }: Props) {
   })
   
   // Handle form submission
-  function onSubmit(values: FormValues): void {
-    setIsSubmitting(true)
-    
-    // Call the parent's update function
-    onUpdateInventory(
-      values.productId,
-      values.updateType as 'add' | 'remove',
-      values.quantity
-    )
-    
-    // Show success state
-    setTimeout(() => {
-      setIsSubmitting(false)
-      setSuccess(true)
+  async function onSubmit(values: FormValues): Promise<void> {
+    try {
+      setIsSubmitting(true);
       
-      setTimeout(() => setSuccess(false), 3000)
-      form.reset()
-    }, 800)
+      // Call the parent's update function
+      onUpdateInventory(
+        values.productId,
+        values.updateType as 'add' | 'remove',
+        values.quantity
+      );
+      
+      // Show success state
+      setSuccess(true);
+      
+      // Clear success message after 2 seconds
+      setTimeout(() => {
+        setSuccess(false);
+      }, 2000);
+    } finally {
+      setIsSubmitting(false);
+    }
   }
   
   return (
@@ -108,7 +111,10 @@ export default function InventoryForm({ onUpdateInventory }: Props) {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Product</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select 
+                    onValueChange={field.onChange} 
+                    value={field.value}
+                  >
                     <FormControl>
                       <SelectTrigger data-testid="product-select">
                         <SelectValue placeholder="Select a product" />
@@ -134,7 +140,10 @@ export default function InventoryForm({ onUpdateInventory }: Props) {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Update Type</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select 
+                    onValueChange={field.onChange} 
+                    value={field.value}
+                  >
                     <FormControl>
                       <SelectTrigger data-testid="update-type-select">
                         <SelectValue placeholder="Select update type" />
@@ -160,7 +169,13 @@ export default function InventoryForm({ onUpdateInventory }: Props) {
                 <FormItem>
                   <FormLabel>Quantity</FormLabel>
                   <FormControl>
-                    <Input type="number" min="1" {...field} data-testid="quantity-input" />
+                    <Input 
+                      type="number" 
+                      min="1" 
+                      {...field} 
+                      onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                      data-testid="quantity-input" 
+                    />
                   </FormControl>
                   <FormDescription>
                     The number of units to add or remove.

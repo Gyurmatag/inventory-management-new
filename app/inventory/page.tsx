@@ -76,7 +76,7 @@ export default function InventoryPage() {
                       <TableCell className="text-right">{product.stock}</TableCell>
                       <TableCell className="text-right">{product.threshold}</TableCell>
                       <TableCell>
-                        <Badge variant={badgeVariant}>{badgeText}</Badge>
+                        <Badge className="badge" variant={badgeVariant}>{badgeText}</Badge>
                       </TableCell>
                     </TableRow>
                   )
