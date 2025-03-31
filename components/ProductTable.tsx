@@ -35,14 +35,14 @@ import { ChangeEvent } from "react"
 export default function ProductTable() {
   const [products] = useState<Product[]>(initialProducts)
   const [searchTerm, setSearchTerm] = useState<string>("")
-  const [filterCategory, setFilterCategory] = useState<string>("")
+  const [filterCategory, setFilterCategory] = useState<string>("all")
 
   // Filter products based on search term and category
   const filteredProducts = products.filter(product => {
     const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
       product.id.toLowerCase().includes(searchTerm.toLowerCase())
     
-    const matchesCategory = filterCategory === "" || product.category === filterCategory
+    const matchesCategory = filterCategory === "all" || product.category === filterCategory
     
     return matchesSearch && matchesCategory
   })
@@ -65,7 +65,11 @@ export default function ProductTable() {
             className="w-full"
             data-testid="product-search"
           />
-          <Select value={filterCategory} onValueChange={setFilterCategory}>
+          <Select 
+            value={filterCategory} 
+            onValueChange={setFilterCategory}
+            defaultValue="all"
+          >
             <SelectTrigger className="w-full sm:w-[180px]" data-testid="category-filter">
               <SelectValue placeholder="All Categories" />
             </SelectTrigger>
